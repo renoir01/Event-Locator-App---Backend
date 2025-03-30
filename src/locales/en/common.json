@@ -1,0 +1,28 @@
+{
+  "validation": {
+    "error": "Validation error occurred",
+    "required": "This field is required",
+    "invalid_email": "Invalid email format",
+    "password_length": "Password must be at least 8 characters long",
+    "invalid_coordinates": "Invalid coordinates provided"
+  },
+  "auth": {
+    "unauthorized": "Unauthorized access",
+    "invalid_credentials": "Invalid email or password",
+    "registration_success": "Registration successful",
+    "login_success": "Login successful"
+  },
+  "events": {
+    "created": "Event created successfully",
+    "updated": "Event updated successfully",
+    "deleted": "Event deleted successfully",
+    "not_found": "Event not found",
+    "already_registered": "You are already registered for this event",
+    "registration_success": "Successfully registered for the event"
+  },
+  "error": {
+    "internal": "An internal server error occurred",
+    "not_found": "Resource not found",
+    "forbidden": "You don't have permission to perform this action"
+  }
+}

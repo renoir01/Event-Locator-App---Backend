@@ -1,0 +1,28 @@
+{
+  "validation": {
+    "error": "Hari ikibazo mu kugenzura amakuru",
+    "required": "Iki gice girakenewe",
+    "invalid_email": "Imeri itemewe",
+    "password_length": "Ijambo ryibanga rigomba kuba rifite inyuguti 8 cyangwa zirenga",
+    "invalid_coordinates": "Aho hantu ntihemewe"
+  },
+  "auth": {
+    "unauthorized": "Nta burenganzira bwo kwinjira",
+    "invalid_credentials": "Imeri cyangwa ijambo ryibanga sibyo",
+    "registration_success": "Kwiyandikisha byagenze neza",
+    "login_success": "Kwinjira byagenze neza"
+  },
+  "events": {
+    "created": "Igikorwa cyashyizweho neza",
+    "updated": "Igikorwa cyavuguruwe neza",
+    "deleted": "Igikorwa cyakuwemo neza",
+    "not_found": "Igikorwa ntikibonetse",
+    "already_registered": "Waramaze kwiyandikisha kuri iki gikorwa",
+    "registration_success": "Kwiyandikisha ku gikorwa byagenze neza"
+  },
+  "error": {
+    "internal": "Hari ikibazo kibaye mu murimo",
+    "not_found": "Ibyo mushaka ntibyabonetse",
+    "forbidden": "Nta burenganzira mufite bwo gukora iyi gahunda"
+  }
+}
