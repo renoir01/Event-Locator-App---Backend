@@ -169,3 +169,18 @@
 {"level":"info","message":"Database connection successful","service":"event-locator-api","timestamp":"2025-04-03 22:10:59"}
 {"authHeader":"Present","ip":"::1","level":"info","message":"PUT /api/users/preferences","service":"event-locator-api","timestamp":"2025-04-03 22:11:14","userAgent":"PostmanRuntime/7.43.3"}
 {"level":"debug","message":"User authenticated: r.kaze@alustudent.com (16)","service":"event-locator-api","timestamp":"2025-04-03 22:11:14"}
+{"database":"event_locator","host":"localhost","level":"debug","message":"Database connection details:","passwordProvided":true,"port":"5433","service":"event-locator-api","timestamp":"2025-04-03 22:42:10","user":"postgres"}
+{"level":"info","message":"Server running on port 3000","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"API Documentation available at http://localhost:3000/api-docs","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"i18next initialized successfully","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"Available languages: en","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"Default language: en","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"New client connected to PostgreSQL","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"PostGIS extension is available","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"Connected to database with PostGIS version: 3.5 USE_GEOS=1 USE_PROJ=1 USE_STATS=1","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"Successfully connected to database: event_locator","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"level":"info","message":"Database connection successful","service":"event-locator-api","timestamp":"2025-04-03 22:42:11"}
+{"authHeader":"Not present","ip":"::1","level":"info","message":"POST /api/auth/register","service":"event-locator-api","timestamp":"2025-04-03 22:45:16","userAgent":"PostmanRuntime/7.43.3"}
+{"level":"info","message":"New client connected to PostgreSQL","service":"event-locator-api","timestamp":"2025-04-03 22:45:16"}
+{"level":"info","message":"PostGIS extension is available","service":"event-locator-api","timestamp":"2025-04-03 22:45:16"}
+{"level":"info","message":"New user registered: c.nishimwe1@alustudent.com (ID: 26)","service":"event-locator-api","timestamp":"2025-04-03 22:45:17"}
