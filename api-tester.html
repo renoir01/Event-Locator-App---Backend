@@ -65,19 +65,27 @@
             <div class="endpoint-group">
                 <h3>Authentication</h3>
                 <div>
+                    <label for="registerEmail" class="sr-only">Email</label>
                     <input type="email" id="registerEmail" placeholder="Email" value="test@example.com">
+                    <label for="registerPassword" class="sr-only">Password</label>
                     <input type="password" id="registerPassword" placeholder="Password" value="Password123!">
+                    <label for="registerName" class="sr-only">Name</label>
                     <input type="text" id="registerName" placeholder="Name" value="Test User">
-                    <select id="registerLanguage">
+                    <label for="registerLanguage" class="sr-only">Preferred Language</label>
+                    <select id="registerLanguage" aria-label="Preferred Language">
                         <option value="en">English</option>
                         <option value="rw">Kinyarwanda</option>
                     </select>
+                    <label for="registerLatitude" class="sr-only">Latitude</label>
                     <input type="number" id="registerLatitude" placeholder="Latitude" value="-1.9441" step="0.0001">
+                    <label for="registerLongitude" class="sr-only">Longitude</label>
                     <input type="number" id="registerLongitude" placeholder="Longitude" value="30.0619" step="0.0001">
                     <button onclick="register()">Register</button>
                 </div>
                 <div>
+                    <label for="loginEmail" class="sr-only">Email</label>
                     <input type="email" id="loginEmail" placeholder="Email" value="test@example.com">
+                    <label for="loginPassword" class="sr-only">Password</label>
                     <input type="password" id="loginPassword" placeholder="Password" value="Password123!">
                     <button onclick="login()">Login</button>
                 </div>
@@ -86,24 +94,39 @@
             <div class="endpoint-group">
                 <h3>Events</h3>
                 <div>
+                    <label for="eventTitle" class="sr-only">Title</label>
                     <input type="text" id="eventTitle" placeholder="Title" value="Tech Conference">
+                    <label for="eventDescription" class="sr-only">Description</label>
                     <input type="text" id="eventDescription" placeholder="Description" value="Annual technology conference">
+                    <label for="eventLatitude" class="sr-only">Latitude</label>
                     <input type="number" id="eventLatitude" placeholder="Latitude" value="-1.9441" step="0.0001">
+                    <label for="eventLongitude" class="sr-only">Longitude</label>
                     <input type="number" id="eventLongitude" placeholder="Longitude" value="30.0619" step="0.0001">
+                    <label for="eventStartDate" class="sr-only">Start Date</label>
                     <input type="datetime-local" id="eventStartDate" value="2025-05-15T09:00">
+                    <label for="eventEndDate" class="sr-only">End Date</label>
                     <input type="datetime-local" id="eventEndDate" value="2025-05-15T17:00">
+                    <label for="eventCategoryId" class="sr-only">Category ID</label>
                     <input type="number" id="eventCategoryId" placeholder="Category ID" value="3">
+                    <label for="eventAddress" class="sr-only">Address</label>
                     <input type="text" id="eventAddress" placeholder="Address" value="Kigali Convention Center">
+                    <label for="eventMaxParticipants" class="sr-only">Max Participants</label>
                     <input type="number" id="eventMaxParticipants" placeholder="Max Participants" value="100">
                     <button onclick="createEvent()">Create Event</button>
                 </div>
                 <div>
+                    <label for="searchLatitude" class="sr-only">Latitude</label>
                     <input type="number" id="searchLatitude" placeholder="Latitude" value="-1.9441" step="0.0001">
+                    <label for="searchLongitude" class="sr-only">Longitude</label>
                     <input type="number" id="searchLongitude" placeholder="Longitude" value="30.0619" step="0.0001">
-                    <input type="number" id="searchRadius" placeholder="Radius (km)" value="10">
+                    <label for="searchRadius" class="sr-only">Search Radius (km)</label>
+                    <input type="number" id="searchRadius" placeholder="Radius (km)" value="5">
+                    <label for="searchCategory" class="sr-only">Category ID</label>
+                    <input type="number" id="searchCategory" placeholder="Category ID">
                     <button onclick="searchEvents()">Search Events</button>
                 </div>
                 <div>
+                    <label for="eventId" class="sr-only">Event ID</label>
                     <input type="number" id="eventId" placeholder="Event ID" value="">
                     <button onclick="getEvent()">Get Event</button>
                     <button onclick="registerForEvent()">Register for Event</button>
