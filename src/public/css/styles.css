@@ -1,0 +1,74 @@
+/* Main Styles for Event Locator App */
+
+/* Event Cards */
+.event-card {
+    transition: transform 0.2s;
+}
+.event-card:hover {
+    transform: translateY(-5px);
+}
+.rating {
+    color: #ffc107;
+}
+
+/* Map Styles */
+#map {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+.map-container {
+    position: relative;
+    margin-bottom: 30px;
+}
+.map-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Tab Navigation */
+.nav-tabs {
+    margin-bottom: 20px;
+}
+
+/* Location Picker */
+#locationPicker {
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+/* Alerts */
+.alert-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+/* Favorites */
+.favorite-btn {
+    cursor: pointer;
+}
+
+/* User Profile */
+.profile-card {
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .map-container {
+        height: 300px;
+    }
+    #map {
+        height: 300px;
+    }
+}

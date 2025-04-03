@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Locator API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .endpoints {
+            flex: 1;
+        }
+        .results {
+            flex: 2;
+        }
+        button {
+            display: block;
+            margin: 10px 0;
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-height: 500px;
+        }
+        input, select {
+            margin: 5px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        .endpoint-group {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Event Locator API Tester</h1>
+    
+    <div class="container">
+        <div class="endpoints">
+            <div class="endpoint-group">
+                <h3>Authentication</h3>
+                <div>
+                    <input type="email" id="registerEmail" placeholder="Email" value="test@example.com">
+                    <input type="password" id="registerPassword" placeholder="Password" value="Password123!">
+                    <input type="text" id="registerName" placeholder="Name" value="Test User">
+                    <select id="registerLanguage">
+                        <option value="en">English</option>
+                        <option value="rw">Kinyarwanda</option>
+                    </select>
+                    <input type="number" id="registerLatitude" placeholder="Latitude" value="-1.9441" step="0.0001">
+                    <input type="number" id="registerLongitude" placeholder="Longitude" value="30.0619" step="0.0001">
+                    <button onclick="register()">Register</button>
+                </div>
+                <div>
+                    <input type="email" id="loginEmail" placeholder="Email" value="test@example.com">
+                    <input type="password" id="loginPassword" placeholder="Password" value="Password123!">
+                    <button onclick="login()">Login</button>
+                </div>
+            </div>
+            
+            <div class="endpoint-group">
+                <h3>Events</h3>
+                <div>
+                    <input type="text" id="eventTitle" placeholder="Title" value="Tech Conference">
+                    <input type="text" id="eventDescription" placeholder="Description" value="Annual technology conference">
+                    <input type="number" id="eventLatitude" placeholder="Latitude" value="-1.9441" step="0.0001">
+                    <input type="number" id="eventLongitude" placeholder="Longitude" value="30.0619" step="0.0001">
+                    <input type="datetime-local" id="eventStartDate" value="2025-05-15T09:00">
+                    <input type="datetime-local" id="eventEndDate" value="2025-05-15T17:00">
+                    <input type="number" id="eventCategoryId" placeholder="Category ID" value="3">
+                    <input type="text" id="eventAddress" placeholder="Address" value="Kigali Convention Center">
+                    <input type="number" id="eventMaxParticipants" placeholder="Max Participants" value="100">
+                    <button onclick="createEvent()">Create Event</button>
+                </div>
+                <div>
+                    <input type="number" id="searchLatitude" placeholder="Latitude" value="-1.9441" step="0.0001">
+                    <input type="number" id="searchLongitude" placeholder="Longitude" value="30.0619" step="0.0001">
+                    <input type="number" id="searchRadius" placeholder="Radius (km)" value="10">
+                    <button onclick="searchEvents()">Search Events</button>
+                </div>
+                <div>
+                    <input type="number" id="eventId" placeholder="Event ID" value="">
+                    <button onclick="getEvent()">Get Event</button>
+                    <button onclick="registerForEvent()">Register for Event</button>
+                </div>
+            </div>
+            
+            <div class="endpoint-group">
+                <h3>Health Check</h3>
+                <button onclick="healthCheck()">Check API Health</button>
+            </div>
+        </div>
+        
+        <div class="results">
+            <h3>Results</h3>
+            <pre id="results">Results will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token') || '';
+        const baseUrl = 'http://localhost:3000/api';
+        const resultsElement = document.getElementById('results');
+        
+        function displayResults(data, error = false) {
+            if (error) {
+                resultsElement.style.color = 'red';
+            } else {
+                resultsElement.style.color = 'black';
+            }
+            resultsElement.textContent = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+        }
+        
+        async function makeRequest(endpoint, method = 'GET', body = null, requiresAuth = false) {
+            try {
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                
+                if (requiresAuth) {
+                    if (!token) {
+                        displayResults('Authentication required. Please login first.', true);
+                        return;
+                    }
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                const options = {
+                    method,
+                    headers
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const response = await fetch(`${baseUrl}${endpoint}`, options);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error?.message || 'An error occurred');
+                }
+                
+                return data;
+            } catch (error) {
+                displayResults(`Error: ${error.message}`, true);
+                throw error;
+            }
+        }
+        
+        async function register() {
+            try {
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const name = document.getElementById('registerName').value;
+                const preferredLanguage = document.getElementById('registerLanguage').value;
+                const latitude = parseFloat(document.getElementById('registerLatitude').value);
+                const longitude = parseFloat(document.getElementById('registerLongitude').value);
+                
+                const data = await makeRequest('/auth/register', 'POST', {
+                    email,
+                    password,
+                    name,
+                    preferredLanguage,
+                    latitude,
+                    longitude
+                });
+                
+                if (data.token) {
+                    token = data.token;
+                    localStorage.setItem('token', token);
+                }
+                
+                displayResults(data);
+            } catch (error) {
+                console.error('Registration error:', error);
+            }
+        }
+        
+        async function login() {
+            try {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                const data = await makeRequest('/auth/login', 'POST', {
+                    email,
+                    password
+                });
+                
+                if (data.token) {
+                    token = data.token;
+                    localStorage.setItem('token', token);
+                }
+                
+                displayResults(data);
+            } catch (error) {
+                console.error('Login error:', error);
+            }
+        }
+        
+        async function createEvent() {
+            try {
+                const title = document.getElementById('eventTitle').value;
+                const description = document.getElementById('eventDescription').value;
+                const latitude = parseFloat(document.getElementById('eventLatitude').value);
+                const longitude = parseFloat(document.getElementById('eventLongitude').value);
+                const startDate = new Date(document.getElementById('eventStartDate').value).toISOString();
+                const endDate = new Date(document.getElementById('eventEndDate').value).toISOString();
+                const categoryId = parseInt(document.getElementById('eventCategoryId').value);
+                const address = document.getElementById('eventAddress').value;
+                const maxParticipants = parseInt(document.getElementById('eventMaxParticipants').value);
+                
+                const data = await makeRequest('/events', 'POST', {
+                    title,
+                    description,
+                    latitude,
+                    longitude,
+                    startDate,
+                    endDate,
+                    categoryId,
+                    address,
+                    maxParticipants
+                }, true);
+                
+                displayResults(data);
+                
+                // If event creation was successful, update the event ID field
+                if (data.data && data.data.id) {
+                    document.getElementById('eventId').value = data.data.id;
+                }
+            } catch (error) {
+                console.error('Event creation error:', error);
+            }
+        }
+        
+        async function searchEvents() {
+            try {
+                const latitude = document.getElementById('searchLatitude').value;
+                const longitude = document.getElementById('searchLongitude').value;
+                const radius = document.getElementById('searchRadius').value;
+                
+                const data = await makeRequest(`/events/search?latitude=${latitude}&longitude=${longitude}&radius=${radius}`);
+                displayResults(data);
+                
+                // If events were found, update the event ID field with the first event ID
+                if (data.data && data.data.events && data.data.events.length > 0) {
+                    document.getElementById('eventId').value = data.data.events[0].id;
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+            }
+        }
+        
+        async function getEvent() {
+            try {
+                const eventId = document.getElementById('eventId').value;
+                
+                if (!eventId) {
+                    displayResults('Please enter an event ID', true);
+                    return;
+                }
+                
+                const data = await makeRequest(`/events/${eventId}`);
+                displayResults(data);
+            } catch (error) {
+                console.error('Get event error:', error);
+            }
+        }
+        
+        async function registerForEvent() {
+            try {
+                const eventId = document.getElementById('eventId').value;
+                
+                if (!eventId) {
+                    displayResults('Please enter an event ID', true);
+                    return;
+                }
+                
+                const data = await makeRequest(`/events/${eventId}/register`, 'POST', null, true);
+                displayResults(data);
+            } catch (error) {
+                console.error('Event registration error:', error);
+            }
+        }
+        
+        async function healthCheck() {
+            try {
+                const data = await makeRequest('/health');
+                displayResults(data);
+            } catch (error) {
+                console.error('Health check error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -20,7 +20,7 @@ describe('Authentication', () => {
   afterAll(async () => {
     // Clean up test data
     await db.query('DELETE FROM users WHERE email = $1', [testUser.email]);
-    await db.pool.end();
+    await db.end();
   });
 
   describe('POST /api/auth/register', () => {
@@ -68,25 +68,38 @@ describe('Authentication', () => {
 
       expect(response.status).toBe(401);
     });
+
+    it('should not login with non-existent email', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'nonexistent@example.com',
+          password: 'password123'
+        });
+
+      expect(response.status).toBe(401);
+    });
   });
 
   describe('PUT /api/auth/location', () => {
     let authToken;
 
     beforeAll(async () => {
+      // Login to get token
       const response = await request(app)
         .post('/api/auth/login')
         .send({
           email: testUser.email,
           password: testUser.password
         });
+
       authToken = response.body.data.token;
     });
 
     it('should update user location', async () => {
       const newLocation = {
-        latitude: -1.9442,
-        longitude: 30.0620
+        latitude: -1.9500,
+        longitude: 30.0700
       };
 
       const response = await request(app)
@@ -99,12 +112,12 @@ describe('Authentication', () => {
       expect(response.body.data.longitude).toBe(newLocation.longitude);
     });
 
-    it('should not update location without auth token', async () => {
+    it('should not update location without auth', async () => {
       const response = await request(app)
         .put('/api/auth/location')
         .send({
-          latitude: -1.9442,
-          longitude: 30.0620
+          latitude: -1.9500,
+          longitude: 30.0700
         });
 
       expect(response.status).toBe(401);

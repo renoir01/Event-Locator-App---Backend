@@ -1,0 +1,660 @@
+{
+	"info": {
+		"_postman_id": "e5a7d8f1-9a6b-4c8e-8d2a-f5e4b3c2a1d0",
+		"name": "Event Locator API",
+		"description": "Collection for testing the Event Locator API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.token) {",
+									"    pm.collectionVariables.set(\"authToken\", jsonData.token);",
+									"    console.log(\"Auth token saved!\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Renoir KAZE\",\n  \"email\": \"R.KAZE@ALUSTUDENT.COM\",\n  \"password\": \"Password123!\",\n  \"preferredLanguage\": \"en\",\n  \"latitude\": -1.9441,\n  \"longitude\": 30.0619\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "Register a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.token) {",
+									"    pm.collectionVariables.set(\"authToken\", jsonData.token);",
+									"    console.log(\"Auth token saved!\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"R.KAZE@ALUSTUDENT.COM\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login with existing user credentials"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for user registration and login"
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Tech Conference\",\n  \"description\": \"Annual technology conference in Kigali\",\n  \"latitude\": -1.9441,\n  \"longitude\": 30.0619,\n  \"address\": \"Kigali Convention Center\",\n  \"startDate\": \"2025-05-15T09:00:00Z\",\n  \"endDate\": \"2025-05-17T18:00:00Z\",\n  \"categoryId\": 1,\n  \"maxParticipants\": 200\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Create a new event"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/events/search?latitude=-1.9441&longitude=30.0619&radius=10&categoryId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events",
+								"search"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "-1.9441"
+								},
+								{
+									"key": "longitude",
+									"value": "30.0619"
+								},
+								{
+									"key": "radius",
+									"value": "10"
+								},
+								{
+									"key": "categoryId",
+									"value": "1"
+								},
+								{
+									"key": "startDate",
+									"value": "2025-04-01",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "2025-12-31",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "tech",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Search for events by location, category, and date range"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event Details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Use the eventId from the collection variable if available",
+									"if (!pm.collectionVariables.get(\"eventId\")) {",
+									"    console.log(\"No event ID found. Please create an event first or set the eventId variable.\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/events/{{eventId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "Get details for a specific event by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Register for Event",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Use the eventId from the collection variable if available",
+									"if (!pm.collectionVariables.get(\"eventId\")) {",
+									"    console.log(\"No event ID found. Please create an event first or set the eventId variable.\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/events/{{eventId}}/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}",
+								"register"
+							]
+						},
+						"description": "Register the authenticated user for an event"
+					},
+					"response": []
+				},
+				{
+					"name": "Unregister from Event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/events/{{eventId}}/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}",
+								"register"
+							]
+						},
+						"description": "Unregister the authenticated user from an event"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Tech Conference\",\n  \"description\": \"Updated description for the annual technology conference\",\n  \"maxParticipants\": 250\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/events/{{eventId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "Update an existing event (only the creator can update)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/events/{{eventId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "Delete an event (only the creator can delete)"
+					},
+					"response": []
+				}
+			],
+			"description": "Event management endpoints"
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/users/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Get the current user's profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Preferences",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notificationRadius\": 10,\n  \"preferredCategories\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/preferences",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"preferences"
+							]
+						},
+						"description": "Update user preferences"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/users/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"events"
+							]
+						},
+						"description": "Get events created by the current user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Registered Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/users/registered-events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"registered-events"
+							]
+						},
+						"description": "Get events the current user is registered for"
+					},
+					"response": []
+				}
+			],
+			"description": "User profile and preferences management"
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "Add Favorite Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites/{{eventId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"favorites",
+								"{{eventId}}"
+							]
+						},
+						"description": "Add an event to favorites"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Favorite Event",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites/{{eventId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"favorites",
+								"{{eventId}}"
+							]
+						},
+						"description": "Remove an event from favorites"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favorite Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/favorites",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"favorites"
+							]
+						},
+						"description": "Get all favorite events for the current user"
+					},
+					"response": []
+				}
+			],
+			"description": "Manage favorite events"
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories"
+							]
+						},
+						"description": "Get all available event categories"
+					},
+					"response": []
+				}
+			],
+			"description": "Event categories management"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

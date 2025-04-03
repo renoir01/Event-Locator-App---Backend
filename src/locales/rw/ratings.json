@@ -1,0 +1,18 @@
+{
+  "rating_submitted": "Isuzuma ryawe ryoherejwe neza",
+  "rating_updated": "Isuzuma ryawe ryavuguruwe neza",
+  "rating_deleted": "Isuzuma ryawe ryakuwemo neza",
+  "rating_not_found": "Isuzuma ntiryabonetse",
+  "already_rated": "Wamaze gusuzuma iki gikorwa",
+  "not_participated": "Ugomba kuba waritabiriye igikorwa mbere yo kurisuzuma",
+  "invalid_rating": "Isuzuma rigomba kuba hagati ya 1 na 5",
+  "event_rating": "Isuzuma ry'Igikorwa",
+  "your_rating": "Isuzuma Ryawe",
+  "average_rating": "Isuzuma Rusange",
+  "total_ratings": "Umubare w'Amasuzuma",
+  "write_review": "Andika Igitekerezo",
+  "edit_rating": "Hindura Isuzuma",
+  "delete_rating": "Siba Isuzuma",
+  "rating_required": "Isuzuma rirakenewe",
+  "rating_stats": "Imibare y'Amasuzuma"
+}

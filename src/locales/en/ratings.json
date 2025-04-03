@@ -1,0 +1,18 @@
+{
+  "rating_submitted": "Your rating has been submitted successfully",
+  "rating_updated": "Your rating has been updated successfully",
+  "rating_deleted": "Your rating has been deleted successfully",
+  "rating_not_found": "Rating not found",
+  "already_rated": "You have already rated this event",
+  "not_participated": "You must participate in the event before rating it",
+  "invalid_rating": "Rating must be between 1 and 5",
+  "event_rating": "Event Rating",
+  "your_rating": "Your Rating",
+  "average_rating": "Average Rating",
+  "total_ratings": "Total Ratings",
+  "write_review": "Write a Review",
+  "edit_rating": "Edit Rating",
+  "delete_rating": "Delete Rating",
+  "rating_required": "Rating is required",
+  "rating_stats": "Rating Statistics"
+}

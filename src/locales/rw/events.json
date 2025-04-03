@@ -1,0 +1,11 @@
+{
+  "created": "Igikorwa cyashyizweho neza",
+  "updated": "Igikorwa cyavuguruwe neza",
+  "deleted": "Igikorwa cyakuweho neza",
+  "not_found": "Igikorwa ntikiboneka",
+  "already_registered": "Wamaze kwiyandikisha kuri iki gikorwa",
+  "registration_success": "Kwiyandikisha ku gikorwa byagenze neza",
+  "unregistration_success": "Gusiba kwiyandikisha ku gikorwa byagenze neza",
+  "not_registered": "Ntiwiyandikishije kuri iki gikorwa",
+  "search_results": "Ibisubizo byo gushakisha ibikorwa"
+}

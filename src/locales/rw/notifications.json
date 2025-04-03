@@ -1,0 +1,16 @@
+{
+  "upcoming_event": "Igikorwa kiri hafi: {{title}}",
+  "event_reminder": "Urwibutso: Igikorwa '{{title}}' gitangira ku {{date}} kuri {{address}}",
+  "new_event_nearby": "Igikorwa gishya hafi yawe: {{title}}",
+  "event_updated": "Igikorwa '{{title}}' cyavuguruwe",
+  "event_cancelled": "Igikorwa '{{title}}' cyahagaritswe",
+  "registration_confirmed": "Kwiyandikisha kwawe ku '{{title}}' kwemejwe",
+  "waitlist_status": "Uri ku rutonde rw'abarinze ku '{{title}}'",
+  "spot_available": "Ubu hari umwanya ku '{{title}}'",
+  "empty_notifications": "Nta nteguza ufite",
+  "mark_as_read": "Garagaza ko wasomye",
+  "mark_all_as_read": "Garagaza ko wasomye byose",
+  "notification_settings": "Igenamiterere ry'integuza",
+  "notification_radius": "Intera y'integuza (km)",
+  "notification_preferences": "Ibyo ukunda ku nteguza"
+}

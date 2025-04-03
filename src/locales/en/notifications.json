@@ -1,0 +1,16 @@
+{
+  "upcoming_event": "Upcoming event: {{title}}",
+  "event_reminder": "Reminder: Event '{{title}}' starts on {{date}} at {{address}}",
+  "new_event_nearby": "New event near you: {{title}}",
+  "event_updated": "Event '{{title}}' has been updated",
+  "event_cancelled": "Event '{{title}}' has been cancelled",
+  "registration_confirmed": "Your registration for '{{title}}' is confirmed",
+  "waitlist_status": "You are on the waitlist for '{{title}}'",
+  "spot_available": "A spot is now available for '{{title}}'",
+  "empty_notifications": "You have no notifications",
+  "mark_as_read": "Mark as read",
+  "mark_all_as_read": "Mark all as read",
+  "notification_settings": "Notification Settings",
+  "notification_radius": "Notification Radius (km)",
+  "notification_preferences": "Notification Preferences"
+}

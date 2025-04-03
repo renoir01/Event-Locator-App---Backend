@@ -1,0 +1,11 @@
+{
+  "created": "Event created successfully",
+  "updated": "Event updated successfully",
+  "deleted": "Event deleted successfully",
+  "not_found": "Event not found",
+  "already_registered": "You are already registered for this event",
+  "registration_success": "Successfully registered for the event",
+  "unregistration_success": "Successfully unregistered from the event",
+  "not_registered": "You are not registered for this event",
+  "search_results": "Event search results"
+}

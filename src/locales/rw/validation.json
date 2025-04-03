@@ -1,0 +1,9 @@
+{
+  "error": "Hari ikosa mu byinjijwe",
+  "required": "Iki gice girakenewe",
+  "invalid_email": "Imeri itari yo",
+  "password_length": "Ijambo ryibanga rigomba kugira nibura inyuguti 8",
+  "invalid_coordinates": "Aho uherereye ntabwo ari ho",
+  "invalid_date": "Itariki itari yo",
+  "end_date_before_start": "Itariki yo kurangiza ntishobora kuba mbere y'itariki yo gutangira"
+}

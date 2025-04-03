@@ -1,0 +1,9 @@
+{
+  "error": "Validation error occurred",
+  "required": "This field is required",
+  "invalid_email": "Invalid email format",
+  "password_length": "Password must be at least 8 characters long",
+  "invalid_coordinates": "Invalid coordinates provided",
+  "invalid_date": "Invalid date format",
+  "end_date_before_start": "End date cannot be before start date"
+}

@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Locator App</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         .event-card {
             transition: transform 0.2s;
@@ -35,43 +37,236 @@
             border-radius: 4px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
+        .nav-tabs {
+            margin-bottom: 20px;
+        }
+        .category-checkbox {
+            margin-bottom: 8px;
+        }
+        .badge-favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+        }
+        .user-profile-tabs {
+            margin-bottom: 15px;
+        }
+        .notification-badge {
+            position: relative;
+            top: -8px;
+            right: 5px;
+            font-size: 0.7rem;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="#">Event Locator</a>
-            <div class="d-flex">
+            <div class="d-flex align-items-center">
+                <select id="languageSelector" class="form-select form-select-sm me-3" aria-label="Language selector">
+                    <option value="en">English</option>
+                    <option value="rw">Kinyarwanda</option>
+                </select>
                 <button id="loginBtn" class="btn btn-outline-light me-2" aria-label="Login">Login</button>
                 <button id="registerBtn" class="btn btn-light" aria-label="Register">Register</button>
+                <div id="userNavMenu" class="d-none">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                            <span id="userDisplayName">User</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#" id="profileLink">Profile</a></li>
+                            <li><a class="dropdown-item" href="#" id="favoritesLink">Favorites</a></li>
+                            <li><a class="dropdown-item" href="#" id="notificationsLink">
+                                Notifications <span id="notificationCount" class="badge bg-danger notification-badge">0</span>
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
-        <div class="row mb-4">
-            <div class="col-md-8">
-                <input type="text" id="searchInput" class="form-control" placeholder="Search events...">
+        <!-- Tab navigation -->
+        <div class="nav nav-tabs" id="appTabs" role="tablist">
+            <div class="nav-item" role="presentation">
+                <button class="nav-link active" id="events-tab" data-bs-toggle="tab" data-bs-target="#events-content" type="button" role="tab" aria-controls="events-content" aria-selected="true">Events</button>
             </div>
-            <div class="col-md-4">
-                <button id="searchBtn" class="btn btn-primary w-100">Search</button>
+            <div class="nav-item" role="presentation">
+                <button class="nav-link" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#favorites-content" type="button" role="tab" aria-controls="favorites-content" aria-selected="false">Favorites</button>
+            </div>
+            <div class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-content" type="button" role="tab" aria-controls="profile-content" aria-selected="false">Profile</button>
+            </div>
+            <div class="nav-item ms-auto" role="presentation">
+                <button class="btn btn-success" id="createEventBtn" type="button">Create Event</button>
             </div>
         </div>
 
-        <div class="map-container">
-            <div id="map"></div>
-            <div class="map-overlay">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="showOnlyNearby">
-                    <label class="form-check-label" for="showOnlyNearby">
-                        Show events within 5km
-                    </label>
+        <!-- Tab content -->
+        <div class="tab-content" id="appTabsContent">
+            <!-- Events Tab -->
+            <div class="tab-pane fade show active" id="events-content" role="tabpanel" aria-labelledby="events-tab">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search events...">
+                    </div>
+                    <div class="col-md-4">
+                        <button id="searchBtn" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="map-overlay">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="showOnlyNearby">
+                            <label class="form-check-label" for="showOnlyNearby">
+                                Show events within 5km
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="eventsList" class="row g-4">
+                    <!-- Events will be dynamically added here -->
                 </div>
             </div>
-        </div>
 
-        <div id="eventsList" class="row g-4">
-            <!-- Events will be dynamically added here -->
+            <!-- Favorites Tab -->
+            <div class="tab-pane fade" id="favorites-content" role="tabpanel" aria-labelledby="favorites-tab">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3>Your Favorite Events</h3>
+                        <p class="text-muted">Events you've saved will appear here</p>
+                    </div>
+                </div>
+                <div id="favoritesList" class="row g-4">
+                    <!-- Favorite events will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-pane fade" id="profile-content" role="tabpanel" aria-labelledby="profile-tab">
+                <!-- Profile sub-tabs -->
+                <ul class="nav nav-pills user-profile-tabs" id="profileTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="profile-info-tab" data-bs-toggle="pill" data-bs-target="#profile-info" type="button" role="tab" aria-controls="profile-info" aria-selected="true">Profile Info</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="preferences-tab" data-bs-toggle="pill" data-bs-target="#preferences" type="button" role="tab" aria-controls="preferences" aria-selected="false">Preferences</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="registered-events-tab" data-bs-toggle="pill" data-bs-target="#registered-events" type="button" role="tab" aria-controls="registered-events" aria-selected="false">Registered Events</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="profileTabsContent">
+                    <!-- Profile Info Tab -->
+                    <div class="tab-pane fade show active" id="profile-info" role="tabpanel" aria-labelledby="profile-info-tab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>User Profile</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="userProfileInfo">
+                                    <!-- User profile info will be added here -->
+                                </div>
+                                <form id="profileForm" class="mt-3">
+                                    <div class="mb-3">
+                                        <label for="profileName" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="profileName" name="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profileLanguage" class="form-label">Preferred Language</label>
+                                        <select class="form-select" id="profileLanguage" name="preferredLanguage">
+                                            <option value="en">English</option>
+                                            <option value="rw">Kinyarwanda</option>
+                                        </select>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="profileLatitude" class="form-label">Latitude</label>
+                                            <input type="number" step="0.000001" class="form-control" id="profileLatitude" name="latitude">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="profileLongitude" class="form-label">Longitude</label>
+                                            <input type="number" step="0.000001" class="form-control" id="profileLongitude" name="longitude">
+                                        </div>
+                                    </div>
+                                    <button type="button" id="getCurrentLocationBtn" class="btn btn-outline-secondary mb-3">
+                                        <i class="bi bi-geo-alt"></i> Use Current Location
+                                    </button>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preferences Tab -->
+                    <div class="tab-pane fade" id="preferences" role="tabpanel" aria-labelledby="preferences-tab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Notification Preferences</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="preferencesForm">
+                                    <div class="mb-4">
+                                        <label class="form-label">Preferred Event Categories</label>
+                                        <div id="categoriesContainer" class="border rounded p-3">
+                                            <!-- Categories will be dynamically added here as checkboxes -->
+                                            <div class="text-center py-3">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="notificationRadius" class="form-label">Notification Radius: <span id="radiusValue">5km</span></label>
+                                        <input type="range" class="form-range" min="0.5" max="50" step="0.5" id="notificationRadius" value="5">
+                                        <div class="d-flex justify-content-between">
+                                            <span>0.5km</span>
+                                            <span>50km</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Save Preferences</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Registered Events Tab -->
+                    <div class="tab-pane fade" id="registered-events" role="tabpanel" aria-labelledby="registered-events-tab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Your Registered Events</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="registeredEventsList" class="row g-4">
+                                    <!-- Registered events will be dynamically added here -->
+                                    <div class="text-center py-3">
+                                        <p class="text-muted">Loading your registered events...</p>
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -122,6 +317,23 @@
                             <label class="form-label">Password</label>
                             <input type="password" class="form-control" id="registerPassword" name="password" required placeholder="Enter your password" aria-label="Password">
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Preferred Language</label>
+                            <select class="form-select" id="registerLanguage" name="preferredLanguage" aria-label="Preferred language">
+                                <option value="en">English</option>
+                                <option value="rw">Kinyarwanda</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <div class="input-group mb-2">
+                                <input type="number" step="0.000001" class="form-control" id="registerLatitude" name="latitude" placeholder="Latitude" aria-label="Latitude">
+                                <input type="number" step="0.000001" class="form-control" id="registerLongitude" name="longitude" placeholder="Longitude" aria-label="Longitude">
+                            </div>
+                            <button type="button" id="registerLocationBtn" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-geo-alt"></i> Use Current Location
+                            </button>
+                        </div>
                         <button type="submit" class="btn btn-primary w-100" aria-label="Submit registration">Register</button>
                     </form>
                 </div>
@@ -129,9 +341,89 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Create Event Modal -->
+    <div class="modal fade" id="createEventModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createEventForm">
+                        <div class="mb-3">
+                            <label for="eventTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="eventTitle" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="eventDescription" name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventCategory" class="form-label">Category</label>
+                            <select class="form-select" id="eventCategory" name="categoryId" required>
+                                <!-- Categories will be dynamically added here -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventAddress" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="eventAddress" name="address" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="eventLatitude" class="form-label">Latitude</label>
+                                <input type="number" step="0.000001" class="form-control" id="eventLatitude" name="latitude" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="eventLongitude" class="form-label">Longitude</label>
+                                <input type="number" step="0.000001" class="form-control" id="eventLongitude" name="longitude" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" id="eventLocationBtn" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-geo-alt"></i> Use Current Location
+                            </button>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="eventStartDate" class="form-label">Start Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="eventStartDate" name="startDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="eventEndDate" class="form-label">End Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="eventEndDate" name="endDate" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventMaxParticipants" class="form-label">Maximum Participants</label>
+                            <input type="number" class="form-control" id="eventMaxParticipants" name="maxParticipants" min="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Create Event</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="notificationsList">
+                        <!-- Notifications will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
-    <script src="/js/main.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
